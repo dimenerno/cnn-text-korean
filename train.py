@@ -181,8 +181,8 @@ with tf.Graph().as_default():
             current_step = tf.train.global_step(sess, global_step)
             if current_step % FLAGS.evaluate_every == 0:
                 print("\nEvaluation:")
-                dev_step(x_dev, np.concatenate(
-                    (y_dev, [[0, 1], [0, 1]]), axis=0), writer=dev_summary_writer)
+                print(x_dev.shape)
+                dev_step(x_dev, y_dev, writer=dev_summary_writer)
                 print("")
             if current_step % FLAGS.checkpoint_every == 0:
                 path = saver.save(sess, checkpoint_prefix,
