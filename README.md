@@ -1,8 +1,7 @@
-**[This code belongs to the "Implementing a CNN for Text Classification in Tensorflow" blog post.](http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/)**
+**[This code belongs to the "Implementing a CNN for Text Classification in Tensorflow" blog post.]**
+We used majority of this source code but gave a slight change to the vectorization of the words and compared the results. Here are the  methods of preprocessing we have used.
 
-It is slightly simplified implementation of Kim's [Convolutional Neural Networks for Sentence Classification](http://arxiv.org/abs/1408.5882) paper in Tensorflow.
-
-한글로 소개한 문서는 [합성곱 신경망(CNN) 딥러닝을 이용한 한국어 문장 분류](http://docs.likejazz.com/cnn-text-classification-tf)를 참고하시기 바랍니다
+- 
 
 ## Requirements
 
