@@ -1,4 +1,4 @@
-**[This code belongs to the "Implementing a CNN for Text Classification in Tensorflow" blog post.]**
+**[This code belongs to the "Implementing a CNN for Text Classification in Tensorflow" blog post.]**   
 We used majority of this source code but gave a slight change to the vectorization of the words and compared the results. Here are the  methods of preprocessing we have used.
 
 - 
