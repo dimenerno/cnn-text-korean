@@ -11,7 +11,7 @@ from multi_class_data_loader import MultiClassDataLoader
 from word_data_processor import WordDataProcessor
 import numpy as np
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]="2"
+os.environ["CUDA_VISIBLE_DEVICES"]="4"
 # Parameters
 # ==================================================
 
