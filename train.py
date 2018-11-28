@@ -10,6 +10,8 @@ from text_cnn import TextCNN
 from multi_class_data_loader import MultiClassDataLoader
 from word_data_processor import WordDataProcessor
 import numpy as np
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]="2"
 # Parameters
 # ==================================================
 
@@ -72,14 +74,16 @@ with tf.Graph().as_default():
         log_device_placement=FLAGS.log_device_placement)
     sess = tf.Session(config=session_conf)
     with sess.as_default():
-        cnn = TextCNN(
-            sequence_length=x_train.shape[1],
-            num_classes=y_train.shape[1],
-            vocab_size=len(vocab_processor.vocabulary_),
-            embedding_size=FLAGS.embedding_dim,
-            filter_sizes=list(map(int, FLAGS.filter_sizes.split(","))),
-            num_filters=FLAGS.num_filters,
-            l2_reg_lambda=FLAGS.l2_reg_lambda)
+        for d in ['/gpu:0','/gpu:1']:
+            with tf.device(d):
+                cnn = TextCNN(
+                  sequence_length=x_train.shape[1],
+                  num_classes=y_train.shape[1],
+                  vocab_size=len(vocab_processor.vocabulary_),
+                  embedding_size=FLAGS.embedding_dim,
+                  filter_sizes=list(map(int, FLAGS.filter_sizes.split(","))),
+                  num_filters=FLAGS.num_filters,
+                  l2_reg_lambda=FLAGS.l2_reg_lambda)
 
         # Define Training procedure
         global_step = tf.Variable(0, name="global_step", trainable=False)
