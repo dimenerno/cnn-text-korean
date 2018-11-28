@@ -74,7 +74,7 @@ with tf.Graph().as_default():
         log_device_placement=FLAGS.log_device_placement)
     sess = tf.Session(config=session_conf)
     with sess.as_default():
-        for d in ['/gpu:0','/gpu:1']:
+        for d in ['/gpu:0']:
             with tf.device(d):
                 cnn = TextCNN(
                   sequence_length=x_train.shape[1],
