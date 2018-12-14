@@ -10,6 +10,7 @@ from text_cnn import TextCNN
 from multi_class_data_loader import MultiClassDataLoader
 from word_data_processor import WordDataProcessor
 import numpy as np
+
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 # Parameters
@@ -67,24 +68,24 @@ print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 
 # Training
 # ==================================================
-with tf.device('/device:CPU:0'):
+with tf.device('/device:GPU:0'):
     with tf.Graph().as_default():
         session_conf = tf.ConfigProto(
             allow_soft_placement=FLAGS.allow_soft_placement,
             log_device_placement=FLAGS.log_device_placement)
-        session_conf.gpu_options.allow_growth = True
         sess = tf.Session(config=session_conf)
         with sess.as_default():
-            # for d in ['/gpu:0']:
-            #    with tf.device(d):
-            cnn = TextCNN(
-                sequence_length=x_train.shape[1],
-                num_classes=y_train.shape[1],
-                vocab_size=len(vocab_processor.vocabulary_),
-                embedding_size=FLAGS.embedding_dim,
-                filter_sizes=list(map(int, FLAGS.filter_sizes.split(","))),
-                num_filters=FLAGS.num_filters,
-                l2_reg_lambda=FLAGS.l2_reg_lambda)
+            for d in ['/gpu:0']:
+                with tf.device(d):
+                    cnn = TextCNN(
+                        sequence_length=x_train.shape[1],
+                        num_classes=y_train.shape[1],
+                        vocab_size=len(vocab_processor.vocabulary_),
+                        embedding_size=FLAGS.embedding_dim,
+                        filter_sizes=list(
+                            map(int, FLAGS.filter_sizes.split(","))),
+                        num_filters=FLAGS.num_filters,
+                        l2_reg_lambda=FLAGS.l2_reg_lambda)
 
             # Define Training procedure
             global_step = tf.Variable(0, name="global_step", trainable=False)
