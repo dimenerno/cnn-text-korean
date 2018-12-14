@@ -10,8 +10,8 @@ from text_cnn import TextCNN
 from multi_class_data_loader import MultiClassDataLoader
 from word_data_processor import WordDataProcessor
 import numpy as np
-# os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-# os.environ["CUDA_VISIBLE_DEVICES"]="4"
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "4"
 # Parameters
 # ==================================================
 
@@ -31,7 +31,7 @@ tf.flags.DEFINE_float("l2_reg_lambda", 0.0,
 tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
 tf.flags.DEFINE_integer(
     "num_epochs", 200, "Number of training epochs (default: 200)")
-tf.flags.DEFINE_integer("evaluate_every", 100,
+tf.flags.DEFINE_integer("evaluate_every", 3,
                         "Evaluate model on dev set after this many steps (default: 100)")
 tf.flags.DEFINE_integer("checkpoint_every", 100,
                         "Save model after this many steps (default: 100)")
@@ -67,11 +67,12 @@ print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 
 # Training
 # ==================================================
-with tf.device('/device:GPU:2'):
+with tf.device('/device:CPU:0'):
     with tf.Graph().as_default():
         session_conf = tf.ConfigProto(
             allow_soft_placement=FLAGS.allow_soft_placement,
             log_device_placement=FLAGS.log_device_placement)
+        session_conf.gpu_options.allow_growth = True
         sess = tf.Session(config=session_conf)
         with sess.as_default():
             # for d in ['/gpu:0']:
@@ -168,8 +169,7 @@ with tf.device('/device:GPU:2'):
                     cnn.dropout_keep_prob: 1.0
                 }
                 step, summaries, loss, accuracy = sess.run(
-                    [global_step, dev_summary_op, cnn.loss, cnn.accuracy],
-                    feed_dict)
+                    [global_step, dev_summary_op, cnn.loss, cnn.accuracy], feed_dict)
                 time_str = datetime.datetime.now().isoformat()
                 print("{}: step {}, loss {:g}, acc {:g}".format(
                     time_str, step, loss, accuracy))
