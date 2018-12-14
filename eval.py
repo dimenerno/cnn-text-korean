@@ -60,7 +60,7 @@ print("\nEvaluating...\n")
 # ==================================================
 checkpoint_file = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
 graph = tf.Graph()
-with tf.device('/gpu:4'):
+with tf.device('/device:GPU:2'):
     with graph.as_default():
         session_conf = tf.ConfigProto(
             allow_soft_placement=FLAGS.allow_soft_placement,
