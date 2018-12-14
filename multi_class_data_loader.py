@@ -24,7 +24,7 @@ class MultiClassDataLoader(object):
         self.__flags.DEFINE_string(
             "train_data_file", "./data/kkk.train", "Data source for the training data.")
         self.__flags.DEFINE_string(
-            "dev_data_file", "./data/kkk.dev", "Data source for the cross validation data.")
+            "dev_data_file", "./data/kkk.train", "Data source for the cross validation data.")
         self.__flags.DEFINE_string(
             "class_data_file", "./data/kkk.cls", "Data source for the class list.")
 
@@ -70,7 +70,7 @@ class MultiClassDataLoader(object):
     def __load_data_and_labels(self, data_file):
         x_text = []
         y = []
-        with open(data_file, 'r', encoding='utf8') as tsvin:
+        with open(data_file, 'r', encoding='utf-8') as tsvin:
             classes = self.__classes()
             one_hot_vectors = np.eye(len(classes), dtype=int)
             class_vectors = {}
